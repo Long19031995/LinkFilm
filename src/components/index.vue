@@ -63,7 +63,7 @@
 </template>
 
 <script>
-	import '@/assets/custom/css/Index.css'
+	import '../assets/custom/css/Index.css'
 	export default {
 		mounted: function () {
 			var self = this

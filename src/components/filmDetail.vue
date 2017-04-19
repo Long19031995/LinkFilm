@@ -56,7 +56,7 @@
 </template>
 
 <script>
-	import '@/assets/custom/css/filmDetail.css'
+	import '../assets/custom/css/filmDetail.css'
 	export default {
 		props: {
 			film: {}

@@ -89,7 +89,7 @@
 </template>
 
 <script>
-	import '@/assets/custom/css/filmCategory.css'
+	import '../assets/custom/css/filmCategory.css'
 	export default {
 		props: {
 			listFilm: Array,

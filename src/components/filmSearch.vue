@@ -89,7 +89,7 @@
 </template>
 
 <script>
-	import '@/assets/custom/css/filmSearch.css'
+	import '../assets/custom/css/filmSearch.css'
 	export default {
 		props: {
 			listFilm: Array,

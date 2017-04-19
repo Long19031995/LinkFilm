@@ -3,10 +3,10 @@ import Vue from 'vue'
 import Resource from 'vue-resource'
 
 // javascripts
-import router from '@/router.js'
+import router from './router.js'
 
 // vue components
-import App from '@/app.vue'
+import App from './app.vue'
 
 // use
 Vue.use(Resource)

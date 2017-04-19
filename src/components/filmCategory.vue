@@ -156,6 +156,17 @@
 			},
 			setJS: function () {
 				$('#circleLoad').hide()
+			},
+			isLinkFilm: function (link) {
+				if (link !== undefined) {
+					if (link.includes('http')) {
+						return true
+					} else {
+						return false
+					}
+				} else {
+					return false
+				}
 			}
 		}
 	}

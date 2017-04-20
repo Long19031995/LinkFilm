@@ -1,20 +1,18 @@
 <template>
 	<div id="index">
 		<div class="navbar-top">
-			<div style="float: left" class="logo">
+			<div @click="toHome()" class="logo">
+				<label>Ninh.Phim</label>
 			</div>
 			<div class="search">
 				<input @keyup="searchFilm()" v-model="search.key" type="search">
-				<router-link to="/film-search">
-					<i @click="getFilmSearch()" class="fa fa-search"></i>
-				</router-link>
+				<i @click="toFilmSearch()" class="fa fa-search"></i>
 				<div class="searchResult">
-					<u><b>Phim mới</b></u>
+					<h3><b>Phim mới</b></h3>
 					<ul v-if="search.listSearchResult.length > 0">
-						<li v-for="(film, index) in search.listSearchResult" @click="getFilmDetail(index)">
-							<router-link to="/film-detail">
-								{{film.title}}								
-							</router-link>
+						<li v-for="(film, index) in search.listSearchResult" @click="toFilmDetail(index)">
+							<img :src="film.source.icon" width="30" height="30">
+							{{film.title}}
 						</li>
 					</ul>
 					<div v-else>...</div>
@@ -24,10 +22,8 @@
 				<button>Thể loại</button>
 				<div class="categoryResult">
 					<ul>
-						<li v-for="(category, index) in category.listCategory" @click="loadFilmByCategory(index)" v-if="category.name_category !== ''">
-							<router-link to="/film-category">
-								{{category.name_category}}
-							</router-link>
+						<li v-for="(category, index) in category.listCategory" @click="toFilmCategory(index)" v-if="category.name_category !== ''">
+								Phim {{category.name_category}}
 						</li>
 					</ul>
 				</div>
@@ -35,8 +31,17 @@
 		</div>
 		<div id="carousel">
 			<div class="intro">
-				<div v-for="film in film.listFilm" class="item">
-					<img :src="film.image" width="400" height="200">
+				<div v-for="(film, index) in film.listFilm" class="item">
+					<img :src="film.banner" width="400" height="200">
+					<div class="background"></div>
+					<div class="title">{{film.title}}</div>
+					<div class="source-name">{{film.source.name}}</div>
+					<div class="title-inter">{{film.title_inter}}</div>
+					<div class="description">{{film.description}}</div>
+					<div class="icon">
+						<img :src="film.source.icon" width="50" height="50">
+					</div>
+					<div @click="toDetail(index)" class="see-more">Xem thêm >></div>
 				</div>
 			</div>
 			<div class="prev-next">
@@ -45,9 +50,9 @@
 			</div>
 		</div>
 		<div id="content">
-			<router-view name="FilmCategory" :listFilm="film.listFilmByCategory" :idCategory="category.idCategory"></router-view>
-			<router-view name="FilmDetail" :film="film.filmDetail"></router-view>
-			<router-view name="FilmSearch" :listFilm="film.listFilmSearch" :keySearch="search.key"></router-view>
+			<router-view name="FilmCategory" :titleCategory="category.titleCategory"></router-view>
+			<router-view name="FilmDetail"></router-view>
+			<router-view name="FilmSearch"></router-view>
 		</div>
 		<div id="scrollTop">
 			<i @click="scrollTop()" class="fa fa-angle-double-up fa-4x"></i>
@@ -55,7 +60,6 @@
 		<div id="circleLoad" class="bound">
 	      	<div class="boundpoint">
 	        	<div class="point">
-	          
 	        	</div>
 	      	</div>      
 	    </div>
@@ -80,7 +84,7 @@
 			return {
 				category: {
 					listCategory: [],
-					idCategory: ''
+					titleCategory: ''
 				},
 				search: {
 					listSearchResult: [],
@@ -97,49 +101,68 @@
 		methods: {
 			searchFilm: function () {
 				var self = this
-				var url = 'http://139.59.116.17:8000/v1/api/search_film?q=' + self.search.key
+				var url = 'http://128.199.192.137:8000/v1/api/search_title_film' + 
+						  '?q=' + self.search.key
 				self.$http.get(url).then(function (res) {
 					if (res.body.meta.code === 'OK') {
-						self.search.listSearchResult = res.body.data
+						self.search.listSearchResult = res.body.data.films
 					}
 				})
 			},
 			getListCategory: function () {
 				var self = this
-				var url = 'http://139.59.116.17:8000/v1/api/get_all_category/'
+				var url = 'http://128.199.192.137:8000/v1/api/get_all_category'
 				self.$http.get(url).then(function (res) {
 					if (res.body.meta.code === 'OK') {
-						self.category.listCategory = res.body.data.category
+						self.category.listCategory = res.body.data.categories
 					}
 				})
 			},
-			loadFilmByCategory: function (index) {
+			toHome: function () {
 				var self = this
-				self.category.idCategory = self.category.listCategory[index].id
-				var url = 'http://139.59.116.17:8000/v1/api/get_list_film?type_film=' + self.category.idCategory + '&page=0&count=8'
-				self.$http.get(url).then(function (res) {
-					if (res.body.meta.code === 'OK') {
-						self.film.listFilmByCategory = res.body.data
-					}
+				self.$router.push({
+					name: 'index'
 				})
 			},
-			getFilmDetail: function (index) {
+			toFilmCategory: function (index) {
 				var self = this
-				self.film.filmDetail = self.search.listSearchResult[index]
+				self.category.titleCategory = self.category.listCategory[index].name_category
+				var categoryId = self.category.listCategory[index].id
+				self.$router.push({
+					name: 'film-category',
+					params: { categoryId: categoryId }
+				})
 			},
-			getFilmSearch: function () {
+			toDetail: function (index) {
 				var self = this
-				var url = 'http://139.59.116.17:8000/v1/api/search_film?q=' + self.search.key +
-						  '&page=0&&count=8'
-				self.$http.get(url).then(function (res) {
-					self.film.listFilmSearch = res.body.data
+				var filmId = self.film.listFilm[index].id
+				self.$router.push({
+					name: 'film-detail',
+					params: { filmId: filmId }
+				})
+			},
+			toFilmDetail: function (index) {
+				var self = this
+				var filmId = self.search.listSearchResult[index].id
+				self.$router.push({
+					name: 'film-detail',
+					params: { filmId: filmId }
+				})
+			},
+			toFilmSearch: function () {
+				var self = this
+				var key = self.search.key
+				self.$router.push({
+					name: 'film-search',
+					params: { key: key }
 				})
 			},
 			getListFilm: function () {
 				var self = this
-				var url = 'http://139.59.116.17:8000/v1/api/get_list_film?type_film=70&page=0&count=10'
+				var page = Math.floor(Math.random() * (30 - 0)) + 0
+				var url = 'http://128.199.192.137:8000/v1/api/get_list_film?page=' + page + '&count=7'
 				self.$http.get(url).then(function (res) {
-					self.film.listFilm = res.body.data
+					self.film.listFilm = res.body.data.films
 				})
 			},
 			setJS: function () {

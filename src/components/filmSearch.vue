@@ -1,85 +1,94 @@
 <template>
-	<div id="filmSearch">
-		<div v-for="(film, index) in listFilm" class="frame">
-			<div class="image">
-				<img :src="film.image">
-				<div class="background"></div>
-				<button @click="getFilmModal(index)" data-toggle="modal" href="#modal-film">Xem chi tiết >></button>
-			</div>
-			<div class="content">
-				<div class="volume">
-					<span v-if="film.episodes !== null">{{film.episodes}}</span>
-					<span v-else>1 Tập</span>
-				</div>
-				<div class="name">
-					<span>{{film.title}}</span>					
-				</div>
-				<div class="source">
-					<img src="http://static.hdonline.vn/template/frontend/images/favicon.ico">
-					<span>{{film.source}}</span>					
-				</div>
-			</div>
+	<div>
+		<div id="titleSearch">
+			<div>Kết quả tìm kiếm</div>
 		</div>
-		<div class="modal fade" id="modal-film">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="background-blur"></div>
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<div id="filmSearch">
+			<div v-for="(film, index) in listFilm" class="frame">
+				<div class="image">
+					<img :src="film.image">
+					<div class="background"></div>
+					<button @click="getFilmModal(index)" data-toggle="modal" href="#modal-film-search">Xem chi tiết >></button>
+				</div>
+				<div class="content">
+					<div class="volume">
+						<span v-if="film.pre_episodes !== null">{{film.pre_episodes}}</span>
+						<span v-if="film.episodes !== null">{{film.episodes}}</span>
+						<span v-else>1 Tập</span>
 					</div>
-					<div class="modal-body">
-						<div class="row">
-							<div class="col-md-8">
-								<span>{{filmModal.title}}</span>
-								<iframe src="https://www.youtube.com/embed/XGSy3_Czz8k"></iframe>
-							</div>
-							<div class="col-md-4">
-								<div v-if="filmModal.episodes !== null">
-									<span>Số lượng: </span>
-									<span>{{filmModal.episodes}}</span>
-								</div>
-								<div>
-									<span>Nguồn: </span>
-									<span>{{filmModal.source}}</span>
-								</div>
-								<div v-if="filmModal.country !== null">
-									<span>Xuất xứ: </span>
-									<span>{{filmModal.country}}</span>
-								</div>
-								<div v-if="filmModal.length !== null">
-									<span>Thời lượng: </span>
-									<span>{{filmModal.length}}</span>
-								</div>
-								<div v-if="filmModal.quality !== null">
-									<span>Chất lượng: </span>
-									<span>{{filmModal.quality}}</span>
-								</div>
-								<div v-if="filmModal.year !== null">
-									<span>Năm: </span>
-									<span>{{filmModal.year}}</span>
-								</div>
-								<div v-if="filmModal.view !== null">
-									<span>Lượt xem: </span>
-									<span>{{filmModal.view}}</span>
-								</div>
-								<a :href="filmModal.url" target="_blank">
-									<i class="fa fa-film"> Xem Phim >></i>
-								</a>
-								<br><br>
-								<a :href="getShare('facebook', filmModal.url)" target="_blank">
-									<i class="fa fa-facebook-official fa-3x"></i>
-								</a>
-								<a :href="getShare('twitter', filmModal.url)" target="_blank">
-									<i class="fa fa-twitter fa-3x"></i>
-								</a>
-								<a :href="getShare('googleplus', filmModal.url)" target="_blank">
-									<i class="fa fa-google-plus-official fa-3x"></i>
-								</a>
-							</div>
+					<div class="name">
+						<span>{{film.title}}</span>				
+					</div>
+					<div class="view">
+						<span>1234 </span><i class="fa fa-eye"></i>
+					</div>
+					<div class="source">
+						<img src="http://static.hdonline.vn/template/frontend/images/favicon.ico">
+						<span>{{film.source}}</span>					
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="modal-film-search">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="background-blur"></div>
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						</div>
-						<div class="row">
-							<p>Nội dung</p>
-							<p>{{filmModal.description}}</p>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-8">
+									<span>{{filmModal.title}}</span>
+									<iframe src="https://www.youtube.com/embed/XGSy3_Czz8k"></iframe>
+								</div>
+								<div class="col-md-4">
+									<div v-if="filmModal.episodes !== null">
+										<span>Số lượng: </span>
+										<span>{{filmModal.episodes}}</span>
+									</div>
+									<div>
+										<span>Nguồn: </span>
+										<span>{{filmModal.source}}</span>
+									</div>
+									<div v-if="filmModal.country !== null">
+										<span>Xuất xứ: </span>
+										<span>{{filmModal.country}}</span>
+									</div>
+									<div v-if="filmModal.length !== null">
+										<span>Thời lượng: </span>
+										<span>{{filmModal.length}}</span>
+									</div>
+									<div v-if="filmModal.quality !== null">
+										<span>Chất lượng: </span>
+										<span>{{filmModal.quality}}</span>
+									</div>
+									<div v-if="filmModal.year !== null">
+										<span>Năm: </span>
+										<span>{{filmModal.year}}</span>
+									</div>
+									<div v-if="filmModal.view !== null">
+										<span>Lượt xem: </span>
+										<span>{{filmModal.view}}</span>
+									</div>
+									<a :href="filmModal.url" target="_blank">
+										<i class="fa fa-film"> Xem Phim >></i>
+									</a>
+									<br><br>
+									<a :href="getShare('facebook', filmModal.url)" target="_blank">
+										<i class="fa fa-facebook-official fa-3x"></i>
+									</a>
+									<a :href="getShare('twitter', filmModal.url)" target="_blank">
+										<i class="fa fa-twitter fa-3x"></i>
+									</a>
+									<a :href="getShare('googleplus', filmModal.url)" target="_blank">
+										<i class="fa fa-google-plus-official fa-3x"></i>
+									</a>
+								</div>
+							</div>
+							<div class="row">
+								<p>Nội dung</p>
+								<p>{{filmModal.description}}</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -91,34 +100,49 @@
 <script>
 	import '../assets/custom/css/filmSearch.css'
 	export default {
-		props: {
-			listFilm: Array,
-			keySearch: String		
-		},
 		mounted: function () {
 			var self = this
+			self.getFilmSearch()
 			self.loadScroll()
 			self.resetPagination()
 			self.setJS()
 		},
 		data: function () {
 			return {
-				page: '',
-				count: '',
-				filmModal: {}
+				page: 0,
+				count: 8,
+				listFilm: [],
+				filmModal: {},
+				key: ''
+			}
+		},
+		watch: {
+			$route: function () {
+				var self = this
+				self.getFilmSearch()
 			}
 		},
 		methods: {
 			getFilmSearch: function () {
 				var self = this
-				self.page++
-				var url = 'http://139.59.116.17:8000/v1/api/search_film?q=' + self.keySearch +
-						  '&page=' + self.page + 
-						  '&&count=' + self.count
+				if (self.key !== self.$route.params.key) {
+					self.key = self.$route.params.key
+					self.page = 0
+					self.count = 8
+					self.listFilm = []
+				}
+				var key = self.key
+				var page = self.page
+				var count = self.count
+				var url = 'http://139.59.116.17:8000/v1/api/search_film' + 
+						  '?q=' + key +
+						  '&page=' + page + 
+						  '&&count=' + count
 				self.$http.get(url).then(function (res) {
 					for (var i = 0; i < res.body.data.length; i++)
 					{
-						self.listFilm.push(res.body.data[i])						
+						self.listFilm.push(res.body.data[i])
+						self.page++
 					}
 					$('#circleLoad').fadeOut('slow')
 				})

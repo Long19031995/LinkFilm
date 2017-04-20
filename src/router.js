@@ -12,18 +12,22 @@ export default new Router({
 	routes: [
 		{
 			path: '',
+			name: 'index',
 			components: { Index },
 			children: [
 				{
-					path: 'film-category',
+					path: 'film-category/:categoryId',
+					name: 'film-category',
 					components: { FilmCategory }
 				},
 				{
-					path: 'film-detail',
+					path: 'film-detail/:filmId',
+					name: 'film-detail',
 					components: { FilmDetail }
 				},
 				{
-					path: 'film-search',
+					path: 'film-search/:key',
+					name: 'film-search',
 					components: { FilmSearch }
 				}
 			]

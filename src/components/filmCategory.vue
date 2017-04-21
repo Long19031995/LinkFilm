@@ -152,7 +152,7 @@
 				var self = this
 				if (self.categoryId !== self.$route.params.categoryId) {
 					self.categoryId = self.$route.params.categoryId
-					self.page = 1
+					self.page = Math.floor(Math.random() * (100 - 0)) + 0
 					self.count = 8
 					self.listFilm = []
 				}

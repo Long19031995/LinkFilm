@@ -105,6 +105,7 @@
 	export default {
 		mounted: function () {
 			var self = this
+			self.resetPagination()
 			self.getListFilm()
 			// self.loadScroll()
 			self.setJS()
@@ -141,6 +142,11 @@
 	      	}
 	    },
 		methods: {
+			resetPagination: function () {
+				var self = this
+				self.page = Math.floor(Math.random() * (100 - 0)) + 0
+				self.count = 8
+			},
 			getIdFromLinkYoutube: function (link) {
 				var self = this
 				if (link !== '') {
@@ -153,8 +159,8 @@
 				var page = self.page
 				var count = self.count
 				var url = 'http://128.199.192.137:8000/v1/api/get_list_film/' +
-						  '?page=' + self.page +
-						  '&count=' + self.count
+						  '?page=' + page +
+						  '&count=' + count
 				self.$http.get(url).then(function (res) {
 					if (res.body.meta.code === 'OK') {
 						for (var i = 0; i < res.body.data.films.length; i++) {

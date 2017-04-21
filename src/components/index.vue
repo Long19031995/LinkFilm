@@ -97,6 +97,7 @@
 	export default {
 		mounted: function () {
 			var self = this
+			self.searchFilm()
 			self.setJS()
 			self.getListCategory()
 			self.getListFilm()
@@ -127,27 +128,33 @@
 		methods: {
 			searchFilm: function () {
 				var self = this
-				var page
+				var count
 
-				page = Math.floor(Math.random() * (100 - 0)) + 0
+				count = Math.floor(Math.random() * (1000 - 500)) + 500
 				var url = 'http://128.199.192.137:8000/v1/api/search_title_film/' + 
 						  '?q=' + self.search.key +
-						  '&page=' + page +
-						  '&count=5'
+						  '&page=1' +
+						  '&count=' + count
 				self.$http.get(url).then(function (res) {
 					if (res.body.meta.code === 'OK') {
-						self.search.listSearchFilmNewResult = res.body.data.films
+						self.search.listSearchFilmNewResult = []
+						for (var i = 0; i < 5; i++) {
+							self.search.listSearchFilmNewResult.push(res.body.data.films[i])
+						}
 					}
 				})
 
-				page = Math.floor(Math.random() * (10 - 0)) + 0
+				count = Math.floor(Math.random() * (100 - 0)) + 0
 				var url = 'http://128.199.192.137:8000/v1/api/get_film_hot/' +
 						  '?q=' + self.search.key +
-						  '&page=' + page +
-						  '&count=5'
+						  '&page=1' +
+						  '&count=' + count
 				self.$http.get(url).then(function (res) {
+					self.search.listSearchFilmHotResult = []
 					if (res.body.meta.code === 'OK') {
-						self.search.listSearchFilmHotResult = res.body.data.films
+						for (var i = 0; i < 5; i++) {
+							self.search.listSearchFilmHotResult.push(res.body.data.films[i])
+						}
 					}
 				})
 			},
@@ -163,7 +170,7 @@
 			toHome: function () {
 				var self = this
 				self.$router.push({
-					name: 'index'
+					name: 'film-new'
 				})
 			},
 			toFilmCategory: function (index) {

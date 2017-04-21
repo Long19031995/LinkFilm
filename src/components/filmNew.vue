@@ -1,14 +1,14 @@
 <template>
 	<div>
-		<div id="titleSearch">
-			<div>Kết quả tìm kiếm</div>
+		<div id="titileCategory">
+			<div>Phim Mới</div>
 		</div>
-		<div id="filmSearch">
+		<div id="filmNew">
 			<div v-for="(film, index) in listFilm" class="frame">
 				<div class="image">
 					<img :src="film.thumbnail">
 					<div class="background"></div>
-					<button @click="getFilmModal(index)" data-toggle="modal" href="#modal-film-search">Xem chi tiết >></button>
+					<button @click="getFilmModal(index)" data-toggle="modal" href="#modal-film-category">Xem chi tiết >></button>
 				</div>
 				<div class="content">
 					<div class="volume">
@@ -23,11 +23,11 @@
 					</div>
 					<div class="source">
 						<img :src="film.source.icon">
-						<span>{{film.source.name}}</span>					
+						<span>{{film.source.name}}</span>
 					</div>
 				</div>
 			</div>
-			<div class="modal fade" id="modal-film-search">
+			<div class="modal fade" id="modal-film-category">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="background-blur"></div>
@@ -95,24 +95,25 @@
 			</div>
 		</div>
 		<div id="load-more">
-			<div @click="getFilmSearch()">Thêm phim >></div>
+			<div @click="getListFilm()">Thêm phim >></div>
 		</div>
 	</div>
 </template>
 
 <script>
-	import '../assets/custom/css/filmSearch.css'
+	import '../assets/custom/css/filmNew.css'
 	export default {
 		mounted: function () {
 			var self = this
-			self.getFilmSearch()
+			self.getListFilm()
 			// self.loadScroll()
-			self.resetPagination()
 			self.setJS()
+		},
+		props: {
+			titleCategory: String
 		},
 		data: function () {
 			return {
-				key: '',
 				page: 1,
 				count: 8,
 				listFilm: [],
@@ -129,15 +130,16 @@
 					description: '',
 					url: '',
 					trailer: ''
-				}
+				},
+				categoryId: ''
 			}
 		},
 		watch: {
-			$route: function () {
-				var self = this
-				self.getFilmSearch()
-			}
-		},
+	      	$route: function () {
+	        	var self = this
+	        	self.getListFilm()
+	      	}
+	    },
 		methods: {
 			getIdFromLinkYoutube: function (link) {
 				var self = this
@@ -145,28 +147,22 @@
 					return self.$parent.$parent.getIdFromLinkYoutube(link)
 				}
 			},
-			getFilmSearch: function () {
+			getListFilm: function () {
 				$('#circleLoad').fadeIn('slow')
 				var self = this
-				if (self.key !== self.$route.params.key) {
-					self.key = self.$route.params.key
-					self.page = 1
-					self.count = 8
-					self.listFilm = []
-				}
-				var key = self.key
 				var page = self.page
 				var count = self.count
-				var url = 'http://128.199.192.137:8000/v1/api/search_title_film/' + 
-						  '?q=' + key +
-						  '&page=' + page + 
-						  '&count=' + count
+				var url = 'http://128.199.192.137:8000/v1/api/get_list_film/' +
+						  '?page=' + self.page +
+						  '&count=' + self.count
 				self.$http.get(url).then(function (res) {
-					res.body.data.films.forEach(function (film) {
-						self.listFilm.push(film)
-						self.page++
-					})
-					$('#circleLoad').fadeOut('slow')
+					if (res.body.meta.code === 'OK') {
+						for (var i = 0; i < res.body.data.films.length; i++) {
+							self.listFilm.push(res.body.data.films[i])
+							self.page++
+						}
+						$('#circleLoad').fadeOut('slow')
+					}
 				})
 			},
 			getFilmModal: function (index) {
@@ -188,14 +184,14 @@
 				self.filmModal.url = self.listFilm[index].url
 				self.filmModal.trailer = self.listFilm[index].trailer[0].url_trailer
 
-				$('#filmSearch .modal .modal-content .background-blur').css('background-image', 'url(' + self.filmModal.banner + ')')
+				$('#filmNew .modal .modal-content .background-blur').css('background-image', 'url(' + self.filmModal.banner + ')')
 			},
 			// loadScroll: function () {
 			// 	var self = this
 			// 	$(window).scroll(function() {
 			// 	    if($(window).scrollTop() === $(document).height() - $(window).height()) {
 			// 	    	$('#circleLoad').fadeIn('slow')
-			// 	    	self.getFilmSearch()
+			// 	    	self.getListFilm()
 			// 	    }
 			// 	})
 			// },
@@ -211,7 +207,19 @@
 				return href
 			},
 			setJS: function () {
+				var self = this
 				$('#circleLoad').hide()
+			},
+			isLinkFilm: function (link) {
+				if (link !== undefined) {
+					if (link.includes('http')) {
+						return true
+					} else {
+						return false
+					}
+				} else {
+					return false
+				}
 			}
 		}
 	}

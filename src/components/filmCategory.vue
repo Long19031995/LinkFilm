@@ -94,6 +94,9 @@
 				</div>
 			</div>
 		</div>
+		<div id="load-more">
+			<div @click="getListFilm()">Thêm phim >></div>
+		</div>
 	</div>
 </template>
 
@@ -103,7 +106,7 @@
 		mounted: function () {
 			var self = this
 			self.getListFilm()
-			self.loadScroll()
+			// self.loadScroll()
 			self.setJS()
 		},
 		props: {
@@ -145,6 +148,7 @@
 				}
 			},
 			getListFilm: function () {
+				$('#circleLoad').fadeIn('slow')
 				var self = this
 				if (self.categoryId !== self.$route.params.categoryId) {
 					self.categoryId = self.$route.params.categoryId
@@ -189,15 +193,15 @@
 
 				$('#filmCategory .modal .modal-content .background-blur').css('background-image', 'url(' + self.filmModal.banner + ')')
 			},
-			loadScroll: function () {
-				var self = this
-				$(window).scroll(function() {
-				    if($(window).scrollTop() === $(document).height() - $(window).height()) {
-				    	$('#circleLoad').fadeIn('slow')
-				    	self.getListFilm()
-				    }
-				})
-			},
+			// loadScroll: function () {
+			// 	var self = this
+			// 	$(window).scroll(function() {
+			// 	    if($(window).scrollTop() === $(document).height() - $(window).height()) {
+			// 	    	$('#circleLoad').fadeIn('slow')
+			// 	    	self.getListFilm()
+			// 	    }
+			// 	})
+			// },
 			getShare(typeShare, link) {
 				var href
 				if (typeShare === 'facebook') {

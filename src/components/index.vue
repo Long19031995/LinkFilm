@@ -8,13 +8,24 @@
 				<input @keyup="searchFilm()" v-model="search.key" type="search">
 				<i @click="toFilmSearch()" class="fa fa-search"></i>
 				<div class="searchResult">
-					<h3><b>Phim mới</b></h3>
-					<ul v-if="search.listSearchResult.length > 0">
-						<li v-for="(film, index) in search.listSearchResult" @click="toFilmDetail(index)">
-							<img :src="film.source.icon" width="30" height="30">
-							{{film.title}}
-						</li>
-					</ul>
+					<div v-if="search.listSearchFilmNewResult.length > 0">
+						<h3><b>Phim mới</b></h3>
+						<ul>
+							<li v-for="(film, index) in search.listSearchFilmNewResult" @click="toFilmNewDetail(index)">
+								<img :src="film.source.icon" width="30" height="30">
+								{{film.title}}
+							</li>
+						</ul>						
+					</div>
+					<div v-if="search.listSearchFilmHotResult.length > 0">
+						<h3><b>Phim hot</b></h3>
+						<ul>
+							<li v-for="(film, index) in search.listSearchFilmHotResult" @click="toFilmHotDetail(index)">
+								<img :src="film.source.icon" width="30" height="30">
+								{{film.title}}
+							</li>
+						</ul>						
+					</div>
 					<div v-else>...</div>
 				</div>
 			</div>
@@ -50,10 +61,25 @@
 			</div>
 		</div>
 		<div id="content">
+			<router-view name="FilmNew"></router-view>
 			<router-view name="FilmCategory" :titleCategory="category.titleCategory"></router-view>
 			<router-view name="FilmDetail"></router-view>
 			<router-view name="FilmSearch"></router-view>
 		</div>
+		<footer>
+			<div class="col-md-6">
+				<div class="logo">
+					NINHPHIM.net
+				</div>
+				<div class="slogan">
+					Tìm link thỏa thích
+				</div>
+			</div>
+			<div class="contact col-md-6">
+				<p>Liên hệ quảng cáo</p>
+				<p>Email: longdeptrai@gmail.com</p>
+			</div>
+		</footer>
 		<div id="scrollTop">
 			<i @click="scrollTop()" class="fa fa-angle-double-up fa-4x"></i>
 		</div>
@@ -73,7 +99,6 @@
 			var self = this
 			self.setJS()
 			self.getListCategory()
-			self.searchFilm()
 			self.getListFilm()
 		},
 		updated: function () {
@@ -87,7 +112,8 @@
 					titleCategory: ''
 				},
 				search: {
-					listSearchResult: [],
+					listSearchFilmNewResult: [],
+					listSearchFilmHotResult: [],
 					key: ''
 				},
 				film: {
@@ -101,12 +127,27 @@
 		methods: {
 			searchFilm: function () {
 				var self = this
+				var page
+
+				page = Math.floor(Math.random() * (100 - 0)) + 0
 				var url = 'http://128.199.192.137:8000/v1/api/search_title_film/' + 
 						  '?q=' + self.search.key +
-						  '&page=1&count=5'
+						  '&page=' + page +
+						  '&count=5'
 				self.$http.get(url).then(function (res) {
 					if (res.body.meta.code === 'OK') {
-						self.search.listSearchResult = res.body.data.films
+						self.search.listSearchFilmNewResult = res.body.data.films
+					}
+				})
+
+				page = Math.floor(Math.random() * (10 - 0)) + 0
+				var url = 'http://128.199.192.137:8000/v1/api/get_film_hot/' +
+						  '?q=' + self.search.key +
+						  '&page=' + page +
+						  '&count=5'
+				self.$http.get(url).then(function (res) {
+					if (res.body.meta.code === 'OK') {
+						self.search.listSearchFilmHotResult = res.body.data.films
 					}
 				})
 			},

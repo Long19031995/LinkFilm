@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Index from './components/index.vue'
+import FilmNew from './components/filmNew.vue'
 import FilmCategory from './components/filmCategory.vue'
 import FilmDetail from './components/filmDetail.vue'
 import FilmSearch from './components/filmSearch.vue'
@@ -15,6 +16,11 @@ export default new Router({
 			name: 'index',
 			components: { Index },
 			children: [
+				{
+					path: 'film-new',
+					name: 'film-new',
+					components: { FilmNew }
+				},
 				{
 					path: 'film-category/:categoryId',
 					name: 'film-category',

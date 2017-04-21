@@ -1,40 +1,29 @@
-#titileCategory {
+#titileNew {
 	color: white;
 	font-size: 30px;
 	text-align: center;
 	background: linear-gradient(to right, #f4f4f4, #ee4b64, #f4f4f4);
 }
-#load-more {
-	background-color: #ee4b64;
-	color: white;
-	float: right;
-	font-size: 20px;
-	padding: 10px 40px;
-	margin: 40px 35px;
-}
-#load-more:hover {
-	cursor: pointer;
-}
-#filmCategory {
+#filmNew {
 	display: flex;
 	flex-flow: row;
 	justify-content: space-around;
 	flex-wrap: wrap;
 }
-#filmCategory .frame {
+#filmNew .frame {
 	width: 170px;
 	height: 300px;
 	margin: 20px 20px;
 	border-radius: 0px;
 	box-shadow: 0px 0px 20px grey;
 }
-#filmCategory .frame .image {
+#filmNew .frame .image {
 	width: 170px;
 	height: 230px;
 	border-radius: 0px;
 	position: relative;
 }
-#filmCategory .frame .image img {
+#filmNew .frame .image img {
 	width: 170px;
 	height: 230px;
 	border-radius: 0px;
@@ -42,7 +31,7 @@
 	top: 0px;
 	left: 0px;
 }
-#filmCategory .frame .image .background {
+#filmNew .frame .image .background {
 	background-color: black;
 	opacity: 0;
 	position: absolute;
@@ -53,10 +42,10 @@
 	border-radius: 0px;
 	transition: 0.5s ease-in-out;
 }
-#filmCategory .frame .image:hover .background {
+#filmNew .frame .image:hover .background {
 	opacity: 0.5;
 }
-#filmCategory .frame .image button {
+#filmNew .frame .image button {
 	position: absolute;
 	top: 110px;
 	left: 32px;
@@ -69,49 +58,49 @@
 	outline: none;
 	transition: 0.3s ease-in-out;
 }
-#filmCategory .frame .image:hover button {
+#filmNew .frame .image:hover button {
 	opacity: 1;
 }
-#filmCategory .content {
+#filmNew .content {
 	background-color: white;
 	width: 170px;
 	height: 70px;
 	padding: 0px 10px;
 	border-radius: 0px;
 }
-#filmCategory .content .volume span {
+#filmNew .content .volume span {
 	color: #ee4b64;
 	font-size: 13px;
 	font-family: monospace;
 	font-weight: bold;
 }
-#filmCategory .content .name {
+#filmNew .content .name {
 	color: #ee4b64;
 	text-align: center;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
-#filmCategory .content .name span {
+#filmNew .content .name span {
 	color: #ee4b64;
 	font-size: 17px;
 	text-transform: capitalize;
 }
-#filmCategory .content .view {
+#filmNew .content .view {
 	float: right;
 }
-#filmCategory .content .view span {
+#filmNew .content .view span {
 	color: #ee4b64;
 	font-weight: bold;
 	font-size: 13px;
 }
-#filmCategory .content .view i {
+#filmNew .content .view i {
 	color: grey;
 }
-#filmCategory .content .source {
+#filmNew .content .source {
 	position: relative;
 }
-#filmCategory .content .source img {
+#filmNew .content .source img {
 	width: 45px;
 	height: 45px;
 	border-radius: 50%;
@@ -122,7 +111,7 @@
 	left: -15px;
 	z-index: 89;
 }
-#filmCategory .content .source span {
+#filmNew .content .source span {
 	color: white;
 	font-size: 17px;
 	background-color: #ee4b64;
@@ -135,13 +124,13 @@
 	left: 11px;
 	z-index: 88;
 }
-#filmCategory .modal .modal-dialog {
+#filmNew .modal .modal-dialog {
 	width: 80%;
 }
-#filmCategory .modal .modal-content {
+#filmNew .modal .modal-content {
 	border-radius: 0px;
 }
-#filmCategory .modal .modal-content .background-blur {
+#filmNew .modal .modal-content .background-blur {
 	position: absolute;
 	top: 0px;
 	width: 100%;
@@ -152,93 +141,93 @@
 	background-size: cover;
 	background-position: 50% 50%;
 }
-#filmCategory .modal .modal-header {
+#filmNew .modal .modal-header {
 	border-bottom: none;
 }
-#filmCategory .modal .modal-body iframe {
+#filmNew .modal .modal-body iframe {
 	border: none;
 	width: 100%;
 	height: 450px;
 	border: 3px solid #ee4b64;
 }
-#filmCategory .modal .modal-body .col-md-4 {
+#filmNew .modal .modal-body .col-md-4 {
 	position: relative;
 }
-#filmCategory .modal .modal-body .col-md-4 {
+#filmNew .modal .modal-body .col-md-4 {
 	background-color: white;
 	height: 492px;
 	margin-left: -10px;
 	margin-right: 10px;
 	opacity: 0.8;
 }
-#filmCategory .modal .modal-body .col-md-4 > div {
+#filmNew .modal .modal-body .col-md-4 > div {
 	padding-bottom: 10px;
 }
-#filmCategory .modal .modal-body .col-md-4 > div span:nth-child(1) {
+#filmNew .modal .modal-body .col-md-4 > div span:nth-child(1) {
 	font-size: 20px;
 }
-#filmCategory .modal .modal-body .col-md-4 > div span:nth-child(2) {
+#filmNew .modal .modal-body .col-md-4 > div span:nth-child(2) {
 	font-size: 25px;
 	color: #ee4b64;
 }
-#filmCategory .modal .modal-body .textShare {
+#filmNew .modal .modal-body .textShare {
 	color: #ee4b64;
 	font-size: 30px;
 	font-weight: bold;
 }
-#filmCategory .modal .modal-body .fa-film {
+#filmNew .modal .modal-body .fa-film {
 	color: white;
 	background-color: #ee4b64;
 	padding: 10px;
 	border-radius: 0px;
 	font-size: 40px;
 }
-#filmCategory .modal .modal-body .fa-film:hover {
+#filmNew .modal .modal-body .fa-film:hover {
 	background-color: #f77777;
 }
-#filmCategory .modal .modal-body .fa-facebook-official {
+#filmNew .modal .modal-body .fa-facebook-official {
 	color: #3b5998;
 	padding: 0px 10px 0px 10px;
 }
-#filmCategory .modal .modal-body .fa-facebook-official:hover {
+#filmNew .modal .modal-body .fa-facebook-official:hover {
 	color: #557fd8;
 }
-#filmCategory .modal .modal-body .fa-twitter {
+#filmNew .modal .modal-body .fa-twitter {
 	color: #28aae1;
 	padding: 0px 10px;
 }
-#filmCategory .modal .modal-body .fa-twitter:hover {
+#filmNew .modal .modal-body .fa-twitter:hover {
 	color: #2ec1ff;
 }
-#filmCategory .modal .modal-body .fa-google-plus-official {
+#filmNew .modal .modal-body .fa-google-plus-official {
 	color: #d41d1d;
 	padding: 0px 10px;
 }
-#filmCategory .modal .modal-body .fa-google-plus-official:hover {
+#filmNew .modal .modal-body .fa-google-plus-official:hover {
 	color: #ed2323;
 }
-#filmCategory .modal .modal-body .row:nth-child(1) .col-md-8 {
+#filmNew .modal .modal-body .row:nth-child(1) .col-md-8 {
 	text-align: center;
 }
-#filmCategory .modal .modal-body .row:nth-child(1) .col-md-8 div {
+#filmNew .modal .modal-body .row:nth-child(1) .col-md-8 div {
 	font-size: 30px;
 	text-transform: capitalize;
 	color: white;
 	background: linear-gradient(to right, #ee4b64, #f1f1f1);
 }
-#filmCategory .modal .modal-body .row:nth-child(1) .col-md-4 {
+#filmNew .modal .modal-body .row:nth-child(1) .col-md-4 {
 	padding-top: 40px;
 }
-#filmCategory .modal .modal-body .row:nth-child(2) {
+#filmNew .modal .modal-body .row:nth-child(2) {
 	margin: 0px -5px 0px 0px;
 	padding: 20px 50px;
 	background-color: white;
 	opacity: 0.8;
 }
-#filmCategory .modal .modal-body .row:nth-child(2) p:nth-child(1) {
+#filmNew .modal .modal-body .row:nth-child(2) p:nth-child(1) {
 	font-size: 30px;
 	color: #ee4b64;
 }
-#filmCategory .modal .modal-body .row:nth-child(2) p:nth-child(2) {
+#filmNew .modal .modal-body .row:nth-child(2) p:nth-child(2) {
 	font-size: 20px;
 }

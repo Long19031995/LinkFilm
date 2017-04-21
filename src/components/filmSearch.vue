@@ -6,25 +6,24 @@
 		<div id="filmSearch">
 			<div v-for="(film, index) in listFilm" class="frame">
 				<div class="image">
-					<img :src="film.image">
+					<img :src="film.thumbnail">
 					<div class="background"></div>
 					<button @click="getFilmModal(index)" data-toggle="modal" href="#modal-film-search">Xem chi tiết >></button>
 				</div>
 				<div class="content">
 					<div class="volume">
-						<span v-if="film.pre_episodes !== null">{{film.pre_episodes}}</span>
-						<span v-if="film.episodes !== null">{{film.episodes}}</span>
+						<span v-if="film.episode !== null">{{film.pre_episode}}/{{film.episode}} Tập</span>
 						<span v-else>1 Tập</span>
 					</div>
 					<div class="name">
 						<span>{{film.title}}</span>				
 					</div>
 					<div class="view">
-						<span>1234 </span><i class="fa fa-eye"></i>
+						<span>{{film.view_root}} </span><i class="fa fa-eye"></i>
 					</div>
 					<div class="source">
-						<img src="http://static.hdonline.vn/template/frontend/images/favicon.ico">
-						<span>{{film.source}}</span>					
+						<img :src="film.source.icon">
+						<span>{{film.source.name}}</span>					
 					</div>
 				</div>
 			</div>
@@ -38,19 +37,19 @@
 						<div class="modal-body">
 							<div class="row">
 								<div class="col-md-8">
-									<span>{{filmModal.title}}</span>
-									<iframe src="https://www.youtube.com/embed/XGSy3_Czz8k"></iframe>
+									<div class="title">{{filmModal.title}}</div>
+									<iframe :src="'https://www.youtube.com/embed/' + getIdFromLinkYoutube(filmModal.trailer)"></iframe>
 								</div>
 								<div class="col-md-4">
-									<div v-if="filmModal.episodes !== null">
+									<div v-if="categoryId === 2">
 										<span>Số lượng: </span>
-										<span>{{filmModal.episodes}}</span>
+										<span>{{filmModal.pre_episode}}/{{filmModal.episode}}</span>
 									</div>
 									<div>
 										<span>Nguồn: </span>
 										<span>{{filmModal.source}}</span>
 									</div>
-									<div v-if="filmModal.country !== null">
+									<div>
 										<span>Xuất xứ: </span>
 										<span>{{filmModal.country}}</span>
 									</div>
@@ -58,15 +57,15 @@
 										<span>Thời lượng: </span>
 										<span>{{filmModal.length}}</span>
 									</div>
-									<div v-if="filmModal.quality !== null">
+									<div>
 										<span>Chất lượng: </span>
 										<span>{{filmModal.quality}}</span>
 									</div>
-									<div v-if="filmModal.year !== null">
+									<div>
 										<span>Năm: </span>
 										<span>{{filmModal.year}}</span>
 									</div>
-									<div v-if="filmModal.view !== null">
+									<div>
 										<span>Lượt xem: </span>
 										<span>{{filmModal.view}}</span>
 									</div>
@@ -74,6 +73,7 @@
 										<i class="fa fa-film"> Xem Phim >></i>
 									</a>
 									<br><br>
+									<span class="textShare">Chia sẻ: </span>
 									<a :href="getShare('facebook', filmModal.url)" target="_blank">
 										<i class="fa fa-facebook-official fa-3x"></i>
 									</a>
@@ -109,11 +109,24 @@
 		},
 		data: function () {
 			return {
-				page: 0,
+				key: '',
+				page: 1,
 				count: 8,
 				listFilm: [],
-				filmModal: {},
-				key: ''
+				filmModal: {
+					thumbnail: '',
+					title: '',
+					episode: '',
+					source: '',
+					country: '',
+					length: '',
+					quality: '',
+					year: '',
+					view: '',
+					description: '',
+					url: '',
+					trailer: ''
+				}
 			}
 		},
 		watch: {
@@ -123,34 +136,55 @@
 			}
 		},
 		methods: {
+			getIdFromLinkYoutube: function (link) {
+				var self = this
+				if (link !== '') {
+					return self.$parent.$parent.getIdFromLinkYoutube(link)
+				}
+			},
 			getFilmSearch: function () {
 				var self = this
 				if (self.key !== self.$route.params.key) {
 					self.key = self.$route.params.key
-					self.page = 0
+					self.page = 1
 					self.count = 8
 					self.listFilm = []
 				}
 				var key = self.key
 				var page = self.page
 				var count = self.count
-				var url = 'http://139.59.116.17:8000/v1/api/search_film' + 
+				var url = 'http://128.199.192.137:8000/v1/api/search_title_film/' + 
 						  '?q=' + key +
 						  '&page=' + page + 
-						  '&&count=' + count
+						  '&count=' + count
 				self.$http.get(url).then(function (res) {
-					for (var i = 0; i < res.body.data.length; i++)
-					{
-						self.listFilm.push(res.body.data[i])
+					res.body.data.films.forEach(function (film) {
+						self.listFilm.push(film)
 						self.page++
-					}
+					})
 					$('#circleLoad').fadeOut('slow')
 				})
 			},
 			getFilmModal: function (index) {
 				var self = this
-				self.filmModal = self.listFilm[index]
-				$('#filmSearch .modal .modal-content .background-blur').css('background-image', 'url(' + this.filmModal.image + ')')
+
+				if (self.categoryId === 2) {
+					self.filmModal.episode = self.listFilm[index].episode
+					self.filmModal.pre_episode = self.listFilm[index].pre_episode
+				}
+				self.filmModal.banner = self.listFilm[index].banner
+				self.filmModal.title = self.listFilm[index].title
+				self.filmModal.source = self.listFilm[index].source.name
+				self.filmModal.country = self.listFilm[index].country[0].name
+				self.filmModal.length = self.listFilm[index].length
+				self.filmModal.quality = self.listFilm[index].quality
+				self.filmModal.year = self.listFilm[index].year[0].year
+				self.filmModal.view = self.listFilm[index].view_root
+				self.filmModal.description = self.listFilm[index].description
+				self.filmModal.url = self.listFilm[index].url
+				self.filmModal.trailer = self.listFilm[index].trailer[0].url_trailer
+
+				$('#filmSearch .modal .modal-content .background-blur').css('background-image', 'url(' + self.filmModal.banner + ')')
 			},
 			loadScroll: function () {
 				var self = this
@@ -160,11 +194,6 @@
 				    	self.getFilmSearch()
 				    }
 				})
-			},
-			resetPagination: function () {
-				var self = this
-				self.page = 0
-				self.count = 8
 			},
 			getShare(typeShare, link) {
 				var href

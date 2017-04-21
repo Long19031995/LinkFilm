@@ -1,9 +1,12 @@
 <template>
 	<div id="filmDetail">
 		<div class="row">
-			<div class="youtube col-md-6">
-				<div class="sr">Xin thứ lỗi, chúng tôi sẽ cập nhật video sớm nhất có thể <i class="fa fa-smile-o"></i></div>
+			<div v-if="film.trailer.length > 0" class="youtube col-md-6">
+				<iframe :src="'https://www.youtube.com/embed/' + getIdYoutube(film.trailer[0].url_trailer)"></iframe>
+			</div>
+			<div v-else class="youtube col-md-6">
 				<iframe src="https://www.youtube.com/embed/FN7ALfpGxiI"></iframe>
+				<div class="sr">Xin thứ lỗi, chúng tôi sẽ cập nhật video sớm nhất có thể <i class="fa fa-smile-o"></i></div>
 			</div>
 			<div class="detail col-md-6">
 				<div class="row">
@@ -14,7 +17,7 @@
 					<div class="content col-md-6">
 						<div v-if="film.episode !== null">
 							<span>Số lượng: </span>
-							<span>{{film.episode}}</span>
+							<span>{{film.pre_episode}}/{{film.episode}}</span>
 						</div>
 						<div>
 							<span>Nguồn: </span>
@@ -34,7 +37,7 @@
 						</div>
 						<div v-if="film.year.length !== 0">
 							<span>Năm: </span>
-							<span>{{film.year}}</span>
+							<span>{{film.year[0].year}}</span>
 						</div>
 						<div>
 							<span>Lượt xem: </span>
@@ -58,8 +61,10 @@
 			<div class="col-md-6">
 				<div class="fb-comments" :data-href="url" data-width="480" data-numposts="5"></div>
 			</div>
-			<div class="description col-md-6">
-				<p>{{film.description}}</p>
+			<div class="col-md-6">
+				<div class="description">
+					<p>{{film.description}}</p>					
+				</div>
 			</div>
 		</div>
 	</div>
@@ -88,6 +93,10 @@
 			}
 		},
 		methods: {
+			getIdYoutube: function (link) {
+				var self = this
+				return self.$parent.$parent.getIdFromLinkYoutube(link)
+			},
 			getUrl: function () {
 				var self = this
 				self.url = 'http://localhost:8080/#/' + self.$route.fullPath

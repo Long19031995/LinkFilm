@@ -27,7 +27,7 @@
 					</div>
 				</div>
 			</div>
-			<!-- <div class="modal fade" id="modal-film-category">
+			<div class="modal fade" id="modal-film-category">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="background-blur"></div>
@@ -37,23 +37,23 @@
 						<div class="modal-body">
 							<div class="row">
 								<div class="col-md-8">
-									<span>{{filmModal.title}}</span>
-									<iframe src="https://www.youtube.com/embed/XGSy3_Czz8k"></iframe>
+									<div class="title">{{filmModal.title}}</div>
+									<iframe :src="'https://www.youtube.com/embed/' + getIdFromLinkYoutube(filmModal.trailer)"></iframe>
 								</div>
 								<div class="col-md-4">
-									<div>
+									<div v-if="categoryId === 2">
 										<span>Số lượng: </span>
-										<span>{{filmModal.episode}}</span>
+										<span>{{filmModal.pre_episode}}/{{filmModal.episode}}</span>
 									</div>
 									<div>
 										<span>Nguồn: </span>
-										<span>{{filmModal.source.name}}</span>
+										<span>{{filmModal.source}}</span>
 									</div>
 									<div>
 										<span>Xuất xứ: </span>
-										<span>{{filmModal.country[0].name}}</span>
+										<span>{{filmModal.country}}</span>
 									</div>
-									<div>
+									<div v-if="filmModal.length !== null">
 										<span>Thời lượng: </span>
 										<span>{{filmModal.length}}</span>
 									</div>
@@ -63,16 +63,17 @@
 									</div>
 									<div>
 										<span>Năm: </span>
-										<span>{{filmModal.year[0].name}}</span>
+										<span>{{filmModal.year}}</span>
 									</div>
 									<div>
 										<span>Lượt xem: </span>
-										<span>{{filmModal.view_root}}</span>
+										<span>{{filmModal.view}}</span>
 									</div>
 									<a :href="filmModal.url" target="_blank">
 										<i class="fa fa-film"> Xem Phim >></i>
 									</a>
 									<br><br>
+									<span class="textShare">Chia sẻ: </span>
 									<a :href="getShare('facebook', filmModal.url)" target="_blank">
 										<i class="fa fa-facebook-official fa-3x"></i>
 									</a>
@@ -91,7 +92,7 @@
 						</div>
 					</div>
 				</div>
-			</div> -->
+			</div>
 		</div>
 	</div>
 </template>
@@ -110,10 +111,23 @@
 		},
 		data: function () {
 			return {
-				page: 0,
+				page: 1,
 				count: 8,
 				listFilm: [],
-				filmModal: {},
+				filmModal: {
+					thumbnail: '',
+					title: '',
+					episode: '',
+					source: '',
+					country: '',
+					length: '',
+					quality: '',
+					year: '',
+					view: '',
+					description: '',
+					url: '',
+					trailer: ''
+				},
 				categoryId: ''
 			}
 		},
@@ -124,18 +138,26 @@
 	      	}
 	    },
 		methods: {
+			getIdFromLinkYoutube: function (link) {
+				var self = this
+				if (link !== '') {
+					return self.$parent.$parent.getIdFromLinkYoutube(link)
+				}
+			},
 			getListFilm: function () {
 				var self = this
 				if (self.categoryId !== self.$route.params.categoryId) {
 					self.categoryId = self.$route.params.categoryId
-					self.page = 0
+					self.page = 1
 					self.count = 8
 					self.listFilm = []
 				}
 				var type = self.$route.params.categoryId
 				var page = self.page
 				var count = self.count
-				var url = 'http://128.199.192.137:8000/v1/api/get_list_film?type=' + type
+				var url = 'http://128.199.192.137:8000/v1/api/get_list_film/?type=' + type +
+						  '&page=' + self.page +
+						  '&count=' + self.count
 				self.$http.get(url).then(function (res) {
 					if (res.body.meta.code === 'OK') {
 						for (var i = 0; i < res.body.data.films.length; i++) {
@@ -148,8 +170,24 @@
 			},
 			getFilmModal: function (index) {
 				var self = this
-				self.filmModal = self.listFilm[index]
-				$('#filmCategory .modal .modal-content .background-blur').css('background-image', 'url(' + this.filmModal.thumbnail + ')')
+
+				if (self.categoryId === 2) {
+					self.filmModal.episode = self.listFilm[index].episode
+					self.filmModal.pre_episode = self.listFilm[index].pre_episode
+				}
+				self.filmModal.banner = self.listFilm[index].banner
+				self.filmModal.title = self.listFilm[index].title
+				self.filmModal.source = self.listFilm[index].source.name
+				self.filmModal.country = self.listFilm[index].country[0].name
+				self.filmModal.length = self.listFilm[index].length
+				self.filmModal.quality = self.listFilm[index].quality
+				self.filmModal.year = self.listFilm[index].year[0].year
+				self.filmModal.view = self.listFilm[index].view_root
+				self.filmModal.description = self.listFilm[index].description
+				self.filmModal.url = self.listFilm[index].url
+				self.filmModal.trailer = self.listFilm[index].trailer[0].url_trailer
+
+				$('#filmCategory .modal .modal-content .background-blur').css('background-image', 'url(' + self.filmModal.banner + ')')
 			},
 			loadScroll: function () {
 				var self = this

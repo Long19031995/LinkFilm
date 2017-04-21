@@ -1,3 +1,7 @@
+#filmDetail .youtube iframe {
+	margin-top: 20px;
+	border: 2px solid #ee4b64;
+}
 #filmDetail .youtube .sr {
 	color: #ee4b64;
 	text-align: center;
@@ -11,6 +15,7 @@
 	border-radius: 0px;
 	width: 200px;
 	height: 290px;
+	border: 2px solid #ee4b64;
 }
 #filmDetail .detail .image a {
 	background-color: #ee4b64;
@@ -66,6 +71,8 @@
 	color: #ed2323;
 }
 #filmDetail .description {
+	background-color: #f9f9f9;
 	color: #ee4b64;
 	font-size: 18px;
+	padding: 20px;
 }

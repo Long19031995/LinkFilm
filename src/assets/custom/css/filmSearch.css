@@ -90,7 +90,9 @@
 	float: right;
 }
 #filmSearch .content .view span {
-	color: red;
+	color: #ee4b64;
+	font-weight: bold;
+	font-size: 13px;
 }
 #filmSearch .content .view i {
 	color: grey;
@@ -125,15 +127,19 @@
 #filmSearch .modal .modal-dialog {
 	width: 80%;
 }
+#filmSearch .modal .modal-content {
+	border-radius: 0px;
+}
 #filmSearch .modal .modal-content .background-blur {
 	position: absolute;
 	top: 0px;
 	width: 100%;
 	height: 100%;
-	opacity: 0.5;
-	filter: blur(3px);
+	opacity: 0.8;
+	filter: blur(1px);
 	background-repeat: none;
 	background-size: cover;
+	background-position: 50% 50%;
 }
 #filmSearch .modal .modal-header {
 	border-bottom: none;
@@ -141,18 +147,33 @@
 #filmSearch .modal .modal-body iframe {
 	border: none;
 	width: 100%;
-	height: 400px;
+	height: 450px;
+	border: 3px solid #ee4b64;
+}
+#filmSearch .modal .modal-body .col-md-4 {
+	position: relative;
+}
+#filmSearch .modal .modal-body .col-md-4 {
+	background-color: white;
+	height: 492px;
+	margin-left: -10px;
+	margin-right: 10px;
+	opacity: 0.8;
 }
 #filmSearch .modal .modal-body .col-md-4 > div {
-	padding-bottom: 20px;
+	padding-bottom: 10px;
 }
 #filmSearch .modal .modal-body .col-md-4 > div span:nth-child(1) {
 	font-size: 20px;
 }
 #filmSearch .modal .modal-body .col-md-4 > div span:nth-child(2) {
-	font-size: 20px;
+	font-size: 25px;
 	color: #ee4b64;
-	text-shadow: 0px 0px 1px white;
+}
+#filmSearch .modal .modal-body .textShare {
+	color: #ee4b64;
+	font-size: 30px;
+	font-weight: bold;
 }
 #filmSearch .modal .modal-body .fa-film {
 	color: white;
@@ -161,32 +182,47 @@
 	border-radius: 0px;
 	font-size: 40px;
 }
+#filmSearch .modal .modal-body .fa-film:hover {
+	background-color: #f77777;
+}
 #filmSearch .modal .modal-body .fa-facebook-official {
 	color: #3b5998;
-	padding: 0px 10px 0px 80px;
+	padding: 0px 10px 0px 10px;
+}
+#filmSearch .modal .modal-body .fa-facebook-official:hover {
+	color: #557fd8;
 }
 #filmSearch .modal .modal-body .fa-twitter {
 	color: #28aae1;
 	padding: 0px 10px;
 }
+#filmSearch .modal .modal-body .fa-twitter:hover {
+	color: #2ec1ff;
+}
 #filmSearch .modal .modal-body .fa-google-plus-official {
 	color: #d41d1d;
 	padding: 0px 10px;
 }
+#filmSearch .modal .modal-body .fa-google-plus-official:hover {
+	color: #ed2323;
+}
 #filmSearch .modal .modal-body .row:nth-child(1) .col-md-8 {
 	text-align: center;
 }
-#filmSearch .modal .modal-body .row:nth-child(1) .col-md-8 span {
+#filmSearch .modal .modal-body .row:nth-child(1) .col-md-8 div {
 	font-size: 30px;
 	text-transform: capitalize;
-	color: #ee4b64;
-	text-shadow: 0px 0px 5px white;
+	color: white;
+	background: linear-gradient(to right, #ee4b64, #f1f1f1);
 }
 #filmSearch .modal .modal-body .row:nth-child(1) .col-md-4 {
 	padding-top: 40px;
 }
 #filmSearch .modal .modal-body .row:nth-child(2) {
+	margin: 0px -5px 0px 0px;
 	padding: 20px 50px;
+	background-color: white;
+	opacity: 0.8;
 }
 #filmSearch .modal .modal-body .row:nth-child(2) p:nth-child(1) {
 	font-size: 30px;

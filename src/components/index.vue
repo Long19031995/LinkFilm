@@ -41,7 +41,7 @@
 					<div class="icon">
 						<img :src="film.source.icon" width="50" height="50">
 					</div>
-					<div @click="toDetail(index)" class="see-more">Xem thêm >></div>
+					<div @click="toDetail(index)" class="see-more">Chi tiết phim >></div>
 				</div>
 			</div>
 			<div class="prev-next">
@@ -101,8 +101,9 @@
 		methods: {
 			searchFilm: function () {
 				var self = this
-				var url = 'http://128.199.192.137:8000/v1/api/search_title_film' + 
-						  '?q=' + self.search.key
+				var url = 'http://128.199.192.137:8000/v1/api/search_title_film/' + 
+						  '?q=' + self.search.key +
+						  '&page=1&count=5'
 				self.$http.get(url).then(function (res) {
 					if (res.body.meta.code === 'OK') {
 						self.search.listSearchResult = res.body.data.films
@@ -111,7 +112,7 @@
 			},
 			getListCategory: function () {
 				var self = this
-				var url = 'http://128.199.192.137:8000/v1/api/get_all_category'
+				var url = 'http://128.199.192.137:8000/v1/api/get_all_category/'
 				self.$http.get(url).then(function (res) {
 					if (res.body.meta.code === 'OK') {
 						self.category.listCategory = res.body.data.categories
@@ -159,8 +160,8 @@
 			},
 			getListFilm: function () {
 				var self = this
-				var page = Math.floor(Math.random() * (30 - 0)) + 0
-				var url = 'http://128.199.192.137:8000/v1/api/get_list_film?page=' + page + '&count=7'
+				var page = Math.floor(Math.random() * (100 - 0)) + 0
+				var url = 'http://128.199.192.137:8000/v1/api/get_list_film/?page=' + page + '&count=7'
 				self.$http.get(url).then(function (res) {
 					self.film.listFilm = res.body.data.films
 				})

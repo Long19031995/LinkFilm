@@ -6,7 +6,7 @@ import Resource from 'vue-resource'
 import router from './router.js'
 
 // vue components
-import App from './app.vue'
+import App from './App.vue'
 
 // use
 Vue.use(Resource)
@@ -16,6 +16,6 @@ Vue.config.productionTip = false
 new Vue({
 	el: '#root',
 	router: router,
-	template: '<app></app>',
+	template: '<App></App>',
 	components: { App }
 })

@@ -60,11 +60,34 @@
 				<i @click="nextItem()" class="fa fa-chevron-right fa-3x next"></i>
 			</div>
 		</div>
-		<div id="content">
-			<router-view name="FilmNew"></router-view>
-			<router-view name="FilmCategory" :titleCategory="category.titleCategory"></router-view>
-			<router-view name="FilmDetail"></router-view>
-			<router-view name="FilmSearch"></router-view>
+		<div id="content" class="container-fluid">
+			<div class="row">
+				<div class="film col-md-9">
+					<router-view name="FilmNew"></router-view>
+					<router-view name="FilmCategory" :titleCategory="category.titleCategory"></router-view>
+					<router-view name="FilmDetail"></router-view>
+					<router-view name="FilmSearch"></router-view>
+				</div>
+				<div class="sidebar col-md-3">
+					<div class="sidebar-hot">
+						<div class="sidebar-title">Danh sách phim HOT</div>
+						<ul>
+							<li v-for="film in sidebar.listFilmHot">
+								<img :src="film.source.icon" width="40" height="40">
+								<div class="film-title">{{film.title}}</div>
+							</li>
+						</ul>
+					</div>
+					<div class="sidebar-category">
+						<div class="sidebar-title">Danh sách thể loại</div>
+						<ul>
+							<li v-for="category in sidebar.listCategory">
+								<div class="category-title">Phim {{category.name_category}}</div>
+							</li>
+						</ul>
+					</div>				
+				</div>
+			</div>
 		</div>
 		<footer>
 			<div class="col-md-6">
@@ -97,10 +120,10 @@
 	export default {
 		mounted: function () {
 			var self = this
-			self.searchFilm()
-			self.setJS()
-			self.getListCategory()
 			self.getListFilm()
+			self.getListCategory()
+			self.getFilmHotSidebar()
+			self.setJS()
 		},
 		updated: function () {
 			var self = this
@@ -122,48 +145,57 @@
 					filmDetail: {},
 					listFilmSearch: {},
 					listFilm: []
+				},
+				sidebar: {
+					listFilmHot: [],
+					listCategory: [],
+					listSource: []
 				}
 			}
 		},
 		methods: {
+			getListSouce: function () {
+				var self = this
+				var url = ''
+			},
+			getFilmHotSidebar: function () {
+				var self = this
+				var url = 'http://139.59.116.17:8000/v1/api/get_film_hot/'
+				self.$http.get(url).then(function (res) {
+					self.sidebar.listFilmHot = res.body.data.films
+				})
+			},
 			searchFilm: function () {
 				var self = this
-				var count
+				var page
 
-				count = Math.floor(Math.random() * (1000 - 500)) + 500
-				var url = 'http://128.199.192.137:8000/v1/api/search_title_film/' + 
+				page = Math.floor(Math.random() * (1000 - 1)) + 1
+				var url = 'http://139.59.116.17:8000/v1/api/search_title_film/' +
 						  '?q=' + self.search.key +
-						  '&page=1' +
-						  '&count=' + count
+						  '&page=1' + page
+						  '&count=5'
 				self.$http.get(url).then(function (res) {
-					if (res.body.meta.code === 'OK') {
-						self.search.listSearchFilmNewResult = []
-						for (var i = 0; i < 5; i++) {
-							self.search.listSearchFilmNewResult.push(res.body.data.films[i])
-						}
-					}
+					self.search.listSearchFilmNewResult = res.body.data.films
 				})
 
-				count = Math.floor(Math.random() * (100 - 0)) + 0
-				var url = 'http://128.199.192.137:8000/v1/api/get_film_hot/' +
+				page = Math.floor(Math.random() * (100 - 1)) + 1
+				var url = 'http://139.59.116.17:8000/v1/api/get_film_hot/' +
 						  '?q=' + self.search.key +
-						  '&page=1' +
-						  '&count=' + count
+						  '&page=' + page
+						  '&count=5'
 				self.$http.get(url).then(function (res) {
-					self.search.listSearchFilmHotResult = []
-					if (res.body.meta.code === 'OK') {
-						for (var i = 0; i < 5; i++) {
-							self.search.listSearchFilmHotResult.push(res.body.data.films[i])
-						}
-					}
+					self.search.listSearchFilmHotResult = res.body.data.films
 				})
 			},
 			getListCategory: function () {
 				var self = this
-				var url = 'http://128.199.192.137:8000/v1/api/get_all_category/'
+				var url = 'http://139.59.116.17:8000/v1/api/get_all_category/'
 				self.$http.get(url).then(function (res) {
 					if (res.body.meta.code === 'OK') {
 						self.category.listCategory = res.body.data.categories
+						for (var i = 0; i < 10; i++) {
+							self.sidebar.listCategory.push(res.body.data.categories[i])
+						}
 					}
 				})
 			},
@@ -190,9 +222,17 @@
 					params: { filmId: filmId }
 				})
 			},
-			toFilmDetail: function (index) {
+			toFilmNewDetail: function (index) {
 				var self = this
-				var filmId = self.search.listSearchResult[index].id
+				var filmId = self.search.listSearchFilmNewResult[index].id
+				self.$router.push({
+					name: 'film-detail',
+					params: { filmId: filmId }
+				})
+			},
+			toFilmHotDetail: function (index) {
+				var self = this
+				var filmId = self.search.listSearchFilmHotResult[index].id
 				self.$router.push({
 					name: 'film-detail',
 					params: { filmId: filmId }
@@ -209,7 +249,7 @@
 			getListFilm: function () {
 				var self = this
 				var page = Math.floor(Math.random() * (100 - 0)) + 0
-				var url = 'http://128.199.192.137:8000/v1/api/get_list_film/?page=' + page + '&count=7'
+				var url = 'http://139.59.116.17:8000/v1/api/get_list_film/?page=' + page + '&count=7'
 				self.$http.get(url).then(function (res) {
 					self.film.listFilm = res.body.data.films
 				})
@@ -258,6 +298,7 @@
 				$(listItem[mid]).css('left', positionMid)
 				$(listItem[mid]).css('z-index', mid)
 				$(listItem[mid]).css('transform', 'scale(1.2, 1.2)')
+				$(listItem[mid]).attr('class', 'item active')
 
 				var mmid = mid
 				var i = 1
@@ -294,16 +335,19 @@
 				var left = $(listItem[0]).css('left')
 				var zindex = $(listItem[0]).css('z-index')
 				var transform = $(listItem[0]).css('transform')
+				var _class = $(listItem[0]).attr('class')
 
 				for (var i = 0; i < listItem.length - 1; i++) {
 					$(listItem[i]).css('left', $(listItem[i + 1]).css('left'))
 					$(listItem[i]).css('z-index', $(listItem[i + 1]).css('z-index'))
 					$(listItem[i]).css('transform', $(listItem[i + 1]).css('transform'))
+					$(listItem[i]).attr('class', $(listItem[i + 1]).attr('class'))
 				}
 
 				$(listItem[listItem.length - 1]).css('left', left)
 				$(listItem[listItem.length - 1]).css('z-index', zindex)
 				$(listItem[listItem.length - 1]).css('transform', transform)
+				$(listItem[listItem.length - 1]).attr('class', _class)
 			},
 			nextItem: function () {
 				var self = this
@@ -312,17 +356,20 @@
 				var left = $(listItem[listItem.length - 1]).css('left')
 				var zindex = $(listItem[listItem.length - 1]).css('z-index')
 				var transform = $(listItem[listItem.length - 1]).css('transform')
+				var _class = $(listItem[listItem.length - 1]).attr('class')
 
 				for (var i = listItem.length - 1; i > 0; i--) {
 					$(listItem[i]).css('left', $(listItem[i - 1]).css('left'))
 					$(listItem[i]).css('z-index', $(listItem[i - 1]).css('z-index'))
 					$(listItem[i]).css('transform', $(listItem[i - 1]).css('transform'))
+					$(listItem[i]).attr('class', $(listItem[i - 1]).attr('class'))
 				}
 
 				$(listItem[0]).css('left', left)
 				$(listItem[0]).css('z-index', zindex)
 				$(listItem[0]).css('transform', transform)
-			}
+				$(listItem[0]).attr('class', _class)
+			},
 		}
 	}
 </script>

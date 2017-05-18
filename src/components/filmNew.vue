@@ -16,7 +16,8 @@
 						<span v-else>1 Tập</span>
 					</div>
 					<div class="name">
-						<span>{{film.title}}</span>				
+						<span v-if="film.title !== ''">{{film.title}}</span>
+						<span v-else>...</span>
 					</div>
 					<div class="view">
 						<span>{{film.view_root}} </span><i class="fa fa-eye"></i>
@@ -107,7 +108,6 @@
 			var self = this
 			self.resetPagination()
 			self.getListFilm()
-			// self.loadScroll()
 			self.setJS()
 		},
 		props: {
@@ -135,12 +135,6 @@
 				categoryId: ''
 			}
 		},
-		watch: {
-	      	$route: function () {
-	        	var self = this
-	        	self.getListFilm()
-	      	}
-	    },
 		methods: {
 			resetPagination: function () {
 				var self = this
@@ -158,7 +152,7 @@
 				var self = this
 				var page = self.page
 				var count = self.count
-				var url = 'http://128.199.192.137:8000/v1/api/get_list_film/' +
+				var url = 'http://139.59.116.17:8000/v1/api/get_list_film/' +
 						  '?page=' + page +
 						  '&count=' + count
 				self.$http.get(url).then(function (res) {

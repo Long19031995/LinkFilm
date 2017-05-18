@@ -159,7 +159,7 @@
 				var type = self.$route.params.categoryId
 				var page = self.page
 				var count = self.count
-				var url = 'http://128.199.192.137:8000/v1/api/get_list_film/?type=' + type +
+				var url = 'http://139.59.116.17:8000/v1/api/get_list_film/?type=' + type +
 						  '&page=' + self.page +
 						  '&count=' + self.count
 				self.$http.get(url).then(function (res) {

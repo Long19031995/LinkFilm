@@ -157,7 +157,7 @@
 				var key = self.key
 				var page = self.page
 				var count = self.count
-				var url = 'http://128.199.192.137:8000/v1/api/search_title_film/' + 
+				var url = 'http://139.59.116.17:8000/v1/api/search_title_film/' + 
 						  '?q=' + key +
 						  '&page=' + page + 
 						  '&count=' + count

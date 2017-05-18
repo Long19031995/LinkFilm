@@ -104,7 +104,7 @@
 			getFilm: function () {
 				var self = this
 				var filmId = self.$route.params.filmId
-				var url = 'http://128.199.192.137:8000/v1/api/get_film_detail?film_id=' + filmId
+				var url = 'http://139.59.116.17:8000/v1/api/get_film_detail?film_id=' + filmId
 				self.$http.get(url).then(function (res) {
 					self.film = res.body.data.film[0]
 				})
